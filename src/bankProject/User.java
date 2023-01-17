@@ -13,7 +13,7 @@ public class User {
      */
     private String lastName;
     /*
-     * universal identififier
+     * universal identifier
      */
     private String uuid;
     /*
@@ -78,7 +78,7 @@ public class User {
      * Digest received pin and test it against this.hashPin
      * 
      * @param pin
-     * @return
+     * @return a boolean indicating if the pin is valid or not
      */
     public boolean validatePin(String pin) {
         MessageDigest md;
@@ -96,7 +96,9 @@ public class User {
     public String getName(){
         return this.firstName;
     }
-
+    /**
+     * prints all accounts respective balance
+     */
     public void printAccountsSummary(){
         Account acc;
         double accountBalance;
@@ -111,7 +113,11 @@ public class User {
             }
         }
     }
-
+    /**
+     * get account
+     * @param accountIndex
+     * @return pointer to the account with that index
+     */
     public Account getAccount(int accountIndex){
         if(accountIndex >= 0 && accountIndex < this.accounts.size()){
             return this.accounts.get(accountIndex);

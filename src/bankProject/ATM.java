@@ -3,6 +3,9 @@ package bankProject;
 import java.util.Scanner;
 
 public class ATM {
+	/**
+	 * Set all constants private
+	 */
     private static final int SHOW_TRANSACTIONS = 1;
     private static final int WITHDRAW = 2;
     private static final int DEPOSIT = 3;
@@ -28,7 +31,13 @@ public class ATM {
 
         }
     }
-
+    /**
+     * prints the main prompt for the user
+     * @param theBank
+     * @param sc
+     * @return the authorized user
+     */
+    
     private static User mainMenuPrompt(Bank theBank,Scanner sc){
         String userID;
         String pin;
@@ -53,10 +62,11 @@ public class ATM {
 
     private static void printUserMenu(User user,Scanner sc){
         int choice;
-        // print summary of the user account
+        
 
         do {
             user.printAccountsSummary();
+            // setups the main prompt
             System.out.printf("Welcome %s, what would you like to do?\n",user.getName());
             System.out.println(
                     "    1) Show transaction history\n" + 
@@ -68,7 +78,8 @@ public class ATM {
 
             System.out.println("Input your choice: ");
             choice = sc.nextInt();
-
+            // here the user would have to make a choice
+            // if its not right, then 
             switch (choice) {
                 case SHOW_TRANSACTIONS:
                     showTransactionHistory(user,sc);
@@ -92,7 +103,11 @@ public class ATM {
             }
         } while (choice != QUIT);
     }
-
+    /**
+     * prints transaction history
+     * @param user  
+     * @param sc scanner passed, to avoid input problems
+     */
     public static void showTransactionHistory(User user, Scanner sc){
         int accountIndex;
         Account userAccount;
@@ -109,6 +124,14 @@ public class ATM {
         System.out.println(userAccount.transactionsHistory());
 
     }
+    /**
+     * The transfer just makes 3 validations to:
+     * finding the sender account
+     * finding the receiver account
+     * make sure that the transfer won't left the sender with negative balance
+     * @param user
+     * @param sc
+     */
     public static void transfer(User user, Scanner sc) {
         int ixSender; // index of the sender account
         int ixReceiver; // index of the receiver account
@@ -117,7 +140,8 @@ public class ATM {
         double amount;
         double balance;
         String memo;
-                        
+        
+        // first validation              
         do {
             System.out.println("Input the index of the account to send from : ");
             ixSender = sc.nextInt();
@@ -131,7 +155,7 @@ public class ATM {
                 "The balance available is : " +
                 String.format("%.2f", balance = sender.getBalance())
                 );
-        
+        // second validation
         do {
             System.out.println("Input the index of the account to send the amount : ");
             ixReceiver = sc.nextInt();
@@ -141,6 +165,7 @@ public class ATM {
             }
         } while (receiver == null);
 
+        //third validation
         do {
             System.out.println("Insert amount to send : ");
             amount = sc.nextDouble();
@@ -154,8 +179,8 @@ public class ATM {
         memo = sc.nextLine();
 
 
-        sender.withdraw(amount,memo);
-        receiver.deposit(amount,memo);
+        sender.withdraw(amount,memo); // make internal transaction objects
+        receiver.deposit(amount,memo); // idem
 
         System.out.println(String.format(
                     "Transaction summary:\n"+
@@ -165,7 +190,11 @@ public class ATM {
 
         System.out.println("Operation succeeded");
     }
-
+    /**
+     * Similar to withdraw function just requires two validations
+     * @param user
+     * @param sc
+     */
     public static void withdraw(User user, Scanner sc) {
         double balance;
         double amount;
@@ -198,7 +227,12 @@ public class ATM {
         System.out.printf("Wait for the money (%.2f)\n", amount);
         System.out.println("Operation succeeded");
     }
-
+    /**
+     * Similar to withdraw, but making sure
+     * not set negative values
+     * @param user
+     * @param sc
+     */
     public static void deposit(User user, Scanner sc) {
         double amount;
         Account accountSelected;
